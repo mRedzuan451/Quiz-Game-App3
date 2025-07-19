@@ -1,7 +1,63 @@
 {
-  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
   "rules": {
+    // Default: No one can read/write to the root unless explicitly allowed
     ".read": false,
-    ".write": false
+    ".write": false,
+
+    "users": {
+      // Users can only read and write their own user data
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid"
+      }
+    },
+
+    "games": {
+      // Any authenticated user can read the list of game IDs (but not their content directly)
+      // This allows users to see available game codes or check if a game code exists.
+      ".read": "auth != null",
+      // Any authenticated user can create a new game node (initial write using push())
+      ".write": "auth != null",
+
+      "$gameId": {
+        // Read access for a specific game:
+        // A user can read a game's data if they are authenticated AND
+        // (they are a player in that game OR they are the creator of that game).
+        ".read": "auth != null && (data.child('players').hasChild(auth.uid) || data.child('creatorUid').val() === auth.uid)",
+
+        // Write access for a specific game:
+        // 1. Initial creation: An authenticated user can create the game if `creatorUid` is set to their UID.
+        // 2. Subsequent updates: Only the creator (Game Master) can write to the overall game object.
+        ".write": "auth != null && ( (newData.exists() && newData.child('creatorUid').val() === auth.uid) || (data.exists() && data.child('creatorUid').val() === auth.uid) )",
+
+        "players": {
+          // Read access for player list within a game is covered by the parent $gameId/.read rule.
+
+          // Write access for individual player nodes: A player can ONLY write to their OWN player node within a game.
+          "$playerId": {
+            ".write": "auth != null && $playerId === auth.uid"
+          }
+        },
+
+        // Questions node within a game:
+        // Read access is covered by the parent $gameId/.read rule.
+        // Write access: Only the game creator (GM) can write to the questions node, and only once (when the game is first created).
+        "questions": {
+          ".write": "auth != null && root.child('games').child($gameId).child('creatorUid').val() === auth.uid && !data.exists()"
+        },
+
+        // Specific game state fields (timeRemaining, currentQuestionIndex, status):
+        // These fields are only writable by the Game Master (creator).
+        "timeRemaining": {
+          ".write": "auth != null && root.child('games').child($gameId).child('creatorUid').val() === auth.uid"
+        },
+        "currentQuestionIndex": {
+          ".write": "auth != null && root.child('games').child($gameId).child('creatorUid').val() === auth.uid"
+        },
+        "status": {
+            ".write": "auth != null && root.child('games').child($gameId).child('creatorUid').val() === auth.uid"
+        }
+      }
+    }
   }
 }
