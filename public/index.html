@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplayer Quiz Master</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Multiplayer Quiz Master</h1>
+        <nav id="auth-status">
+            </nav>
+    </header>
+
+    <main id="app-container">
+        <section id="login-section" class="active-section">
+            <h2>Welcome!</h2>
+            <form id="login-form">
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <button id="register-btn">Register</button>
+        </section>
+
+        <section id="lobby-section" class="hidden-section">
+            <h2>Game Lobby</h2>
+            <button id="create-game-btn">Create New Game</button>
+            <input type="text" id="game-code-input" placeholder="Enter Game Code">
+            <button id="join-game-btn">Join Game</button>
+            <h3>Active Games</h3>
+            <ul id="active-games-list">
+                </ul>
+        </section>
+
+        <section id="game-master-setup-section" class="hidden-section">
+            <h2>Set Up New Game</h2>
+            <form id="game-setup-form">
+                <label for="game-mode">Mode:</label>
+                <select id="game-mode">
+                    <option value="adult">Adult</option>
+                    <option value="kids">Kids</option>
+                </select>
+                <label for="question-count">Number of Questions:</label>
+                <input type="number" id="question-count" value="10" min="5" max="50">
+                <label for="time-per-question">Time per Question (seconds):</label>
+                <input type="number" id="time-per-question" value="20" min="5" max="60">
+                <label for="display-option">Display:</label>
+                <select id="display-option">
+                    <option value="shared">Shared Screen (TV/Projector)</option>
+                    <option value="individual">Individual Screens</option>
+                </select>
+                <button type="submit">Start Game</button>
+            </form>
+            <p>Your Game Code: <strong id="generated-game-code"></strong></p>
+            <h3>Players:</h3>
+            <ul id="game-master-player-list"></ul>
+        </section>
+
+        <section id="player-game-section" class="hidden-section">
+            <h2 id="current-question-text">Question will appear here...</h2>
+            <div id="answer-options">
+                </div>
+            <p>Time Left: <span id="timer-display"></span>s</p>
+            <p>Your Score: <span id="player-score">0</span></p>
+        </section>
+
+        <section id="scoreboard-section" class="hidden-section">
+            <h2>Final Scoreboard</h2>
+            <ul id="final-scoreboard-list">
+                </ul>
+            <button id="play-again-btn">Play Again</button>
+            <button id="return-to-lobby-btn">Return to Lobby</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Quiz Master. All rights reserved.</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-database-compat.js"></script>
+
+    <script src="/js/firebaseService.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/ui.js"></script>
+    <script src="/js/gameLogic.js"></script>
+    <script src="/js/main.js"></script> </body>
+</html>
