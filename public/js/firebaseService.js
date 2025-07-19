@@ -1,18 +1,22 @@
 // js/firebaseService.js
 
-// Firebase configuration (replace with your actual Firebase config)
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID",
-    databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.asia-southeast1.firebasedatabase.app" // Ensure correct region
+  apiKey: "AIzaSyB7aA0VtgmLCMWERSzxZgCwuxGIHWwbuv0",
+  authDomain: "quiz-game-app-47c94.firebaseapp.com",
+  projectId: "quiz-game-app-47c94",
+  storageBucket: "quiz-game-app-47c94.firebasestorage.app",
+  messagingSenderId: "326604015195",
+  appId: "1:326604015195:web:4ef728c83b8b6c9ce0a17e"
 };
 
 // Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const database = firebase.database();
 
